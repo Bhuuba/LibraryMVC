@@ -6,87 +6,206 @@
 }
 
 <style>
-    .feed-container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
+    .social-feed {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .feed-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .feed-title {
+        font-size: 2.2rem;
+        color: #1a1a1a;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
     }
 
     .post-card {
-        border: 1px solid #e2e2e2;
-        border-radius: 10px;
-        background-color: #fff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
-        overflow: hidden;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease;
     }
 
-        .post-card .card-header {
-            background-color: #f8f8f8;
-            padding: 10px 15px;
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .post-card:hover {
+            transform: translateY(-3px);
         }
 
-            .post-card .card-header .post-author {
-                color: #333;
-            }
+    .post-header {
+        padding: 1.2rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid #f5f5f5;
+    }
 
-            .post-card .card-header .post-date {
-                color: #888;
-                font-size: 0.85rem;
-            }
-
-        .post-card .card-body {
-            padding: 15px;
-        }
-
-            .post-card .card-body p {
-                margin: 0;
-            }
-
-        .post-card .card-footer {
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-    .create-btn, .stats-btn, .get-pdf-btn {
-        display: inline-block;
-        padding: 8px 16px;
-        background-color: #0071e3;
-        color: #fff;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 0.9rem;
+    .author-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #007aff, #005bb5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
         font-weight: 600;
-        transition: background-color 0.3s ease;
-        margin-right: 10px;
+        font-size: 1.1rem;
     }
 
-    .stats-btn {
-        background-color: #585858;
+    .post-meta {
+        flex-grow: 1;
     }
 
-        .create-btn:hover,
-        .stats-btn:hover,
-        .get-pdf-btn:hover {
-            background-color: #005bb5;
+    .post-author {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.2rem;
+    }
+
+    .post-date {
+        color: #888;
+        font-size: 0.85rem;
+    }
+
+    .post-content {
+        padding: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #444;
+    }
+
+    .post-footer {
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fafafa;
+        border-top: 1px solid #f5f5f5;
+    }
+
+    .action-btn {
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+        background: #007aff;
+        color: white !important;
+    }
+
+    .btn-secondary {
+        background: #585858;
+        color: white !important;
+    }
+
+    .view-counter {
+        color: #666;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #888;
+        border-radius: 12px;
+        background: #fafafa;
+    }
+
+    /* Стилі для таблиці рейтингу */
+    .rating-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+        .rating-table th,
+        .rating-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
         }
+
+        .rating-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .rating-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+    .rank-cell {
+        width: 60px;
+        font-weight: 700;
+        color: #007aff;
+    }
+
+    .post-content-cell {
+        max-width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .views-cell {
+        width: 120px;
+        text-align: right;
+    }
+
+    .medal {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        line-height: 24px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+
+    .gold {
+        background: #ffd700;
+        color: #000;
+    }
+
+    .silver {
+        background: #c0c0c0;
+        color: #000;
+    }
+
+    .bronze {
+        background: #cd7f32;
+        color: #000;
+    }
 </style>
 
-<div class="feed-container">
-    <div class="mb-3 text-center">
-        <h1>Пости</h1>
-        <a asp-action="Create" class="create-btn">Додати пост</a>
-        <button type="button" class="stats-btn" data-bs-toggle="modal" data-bs-target="#chartModal">
-            Показати статистику
-        </button>
+<div class="social-feed">
+    <div class="feed-header">
+        <h1 class="feed-title">Стрічка постів</h1>
+        <div class="d-flex gap-2 justify-content-center flex-wrap">
+            <a asp-action="Create" class="action-btn btn-primary">
+                <i class="bi bi-plus-lg"></i>
+                Новий пост
+            </a>
+            <button type="button" class="action-btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ratingModal">
+                <i class="bi bi-trophy"></i>
+                Рейтинг
+            </button>
+        </div>
     </div>
 
     @if (Model != null && Model.Any())
@@ -94,19 +213,26 @@
         foreach (var post in Model)
         {
             <div class="post-card" data-post-id="@post.Id">
-                <div class="card-header">
-                    <span class="post-author">@post.User?.Email</span>
-                    <span class="post-date">@post.CreatedAt.ToString("dd.MM.yyyy")</span>
+                <div class="post-header">
+                    <div class="author-avatar">
+                        @post.User?.Email?[0].ToString().ToUpper()
+                    </div>
+                    <div class="post-meta">
+                        <div class="post-author">@post.User?.Email</div>
+                        <div class="post-date">@post.CreatedAt.ToString("dd MMM yyyy 'о' HH:mm")</div>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="post-content">
                     <p>@post.Text</p>
                 </div>
-                <div class="card-footer">
-                    <a asp-action="Details" asp-route-id="@post.Id" class="create-btn">Коментарі</a>
-                    <div>
-                        <span class="view-count" data-post-id="@post.Id">0</span> переглядів
-                        <!-- Контейнер для кнопки PDF (буде додано, якщо цей пост має максимальний лічильник) -->
-                        <span class="pdf-btn-container"></span>
+                <div class="post-footer">
+                    <a asp-action="Details" asp-route-id="@post.Id" class="action-btn btn-primary">
+                        <i class="bi bi-chat-left-text"></i>
+                        Коментарі
+                    </a>
+                    <div class="view-counter">
+                        <i class="bi bi-eye"></i>
+                        <span data-post-id="@post.Id">0</span> переглядів
                     </div>
                 </div>
             </div>
@@ -114,105 +240,130 @@
     }
     else
     {
-        <p class="text-center">Немає записів</p>
+        <div class="empty-state">
+            <i class="bi bi-file-earmark-post fs-1"></i>
+            <p class="mt-3">Поки що немає жодного поста</p>
+        </div>
     }
 </div>
 
-<!-- Модальне вікно для статистики -->
-<div class="modal fade" id="chartModal" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+<!-- Модальне вікно рейтингу -->
+<div class="modal fade" id="ratingModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="chartModalLabel">Статистика постів за роками</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">
+                    <i class="bi bi-trophy me-2"></i>
+                    Рейтинг постів
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div id="postsByYearChart" style="width: 100%; height: 400px;"></div>
+                <table class="rating-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-cell">Місце</th>
+                            <th>Пост</th>
+                            <th class="views-cell">Перегляди</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ratingBody">
+                        <!-- Тут буде динамічний контент -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jsPDF для генерації PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- Google Charts -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
-        // Завантаження Google Charts
-        google.charts.load('current', { 'packages': ['corechart'] });
-        function drawPostsByYearChart() {
-            fetch('/api/charts/countPostsByYear')
-                .then(response => response.json())
-                .then(data => {
-                    const dataTable = new google.visualization.DataTable();
-                    dataTable.addColumn('string', 'Рік');
-                    dataTable.addColumn('number', 'Кількість постів');
-                    data.forEach(item => {
-                        dataTable.addRow([item.year, item.count]);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ініціалізація даних про перегляди
+            const initializeViews = () => {
+                document.querySelectorAll('.post-card').forEach(post => {
+                    const postId = post.dataset.postId;
+                    const views = parseInt(localStorage.getItem(`post_${postId}_views`) || 0);
+                    post.querySelector('[data-post-id]').textContent = views;
+                });
+            };
+
+            // Оновлення рейтингу
+            const updateRating = () => {
+                const postsData = [];
+                document.querySelectorAll('.post-card').forEach(post => {
+                    const postId = post.dataset.postId;
+                    const views = parseInt(localStorage.getItem(`post_${postId}_views`) || 0);
+                    const content = post.querySelector('.post-content p').textContent;
+                    const author = post.querySelector('.post-author').textContent;
+
+                    postsData.push({
+                        id: postId,
+                        views: views,
+                        content: content,
+                        author: author
                     });
-                    const options = {
-                        title: 'Пости за роками',
-                        width: '100%',
-                        height: 400,
-                        legend: { position: 'none' }
-                    };
-                    const chart = new google.visualization.ColumnChart(document.getElementById('postsByYearChart'));
-                    chart.draw(dataTable, options);
                 });
-        }
 
-        // Функціонал для відображення лічильника переглядів і додавання кнопки PDF для поста з максимумом переглядів
-        document.addEventListener('DOMContentLoaded', () => {
-            const viewCountElements = document.querySelectorAll('.view-count');
-            let maxCount = 0;
-            let maxPostIds = [];
+                // Сортування за кількістю переглядів
+                const sortedPosts = postsData.sort((a, b) => b.views - a.views);
+                const ratingBody = document.getElementById('ratingBody');
+                ratingBody.innerHTML = '';
 
-            // Отримання значень з localStorage для кожного поста
-            viewCountElements.forEach(el => {
-                const postId = el.getAttribute('data-post-id');
-                const storageKey = `post_${postId}_viewCount`;
-                const count = parseInt(localStorage.getItem(storageKey)) || 0;
-                el.innerText = count;
-                if (count > maxCount) {
-                    maxCount = count;
-                    maxPostIds = [postId];
-                } else if (count === maxCount && count !== 0) {
-                    maxPostIds.push(postId);
-                }
-            });
+                sortedPosts.forEach((post, index) => {
+                    const row = document.createElement('tr');
+                    let medal = '';
 
-            // Додаємо кнопку "Отримати нагороду" для постів з максимальним лічильником переглядів
-            maxPostIds.forEach(postId => {
-                const card = document.querySelector(`.post-card[data-post-id='${postId}']`);
-                if (card) {
-                    const btnContainer = card.querySelector('.pdf-btn-container');
-                    if (btnContainer) {
-                        const pdfButton = document.createElement('button');
-                        pdfButton.innerText = "Отримати нагороду";
-                        pdfButton.className = "get-pdf-btn";
-                        pdfButton.addEventListener('click', () => {
-                            const { jsPDF } = window.jspdf;
-                            const doc = new jsPDF();
-                            doc.text("Ви великий молодець!", 10, 10);
-                            doc.save("reward.pdf");
-                        });
-                        btnContainer.appendChild(pdfButton);
+                    if (index === 0) medal = '<span class="medal gold">🥇</span>';
+                    else if (index === 1) medal = '<span class="medal silver">🥈</span>';
+                    else if (index === 2) medal = '<span class="medal bronze">🥉</span>';
+
+                    // Якщо топ 1, додаємо кнопку для отримання сертифікату
+                    let certificateButton = '';
+                    if (index === 0) {
+                        certificateButton = `
+                            <div class="mt-2">
+                                <a href="/files/f.pdf" target="_blank" class="btn btn-success btn-sm">
+                                    Отримати сертифікат
+                                </a>
+                            </div>
+                        `;
                     }
-                }
-            });
-        });
 
-        // Ініціалізація Google Charts при відкритті модального вікна
-        document.addEventListener('DOMContentLoaded', () => {
-            const chartModal = document.getElementById('chartModal');
-            if (chartModal) {
-                chartModal.addEventListener('shown.bs.modal', () => {
-                    drawPostsByYearChart();
+                    row.innerHTML = `
+                        <td class="rank-cell">${medal} ${index + 1}</td>
+                        <td class="post-content-cell" title="${post.content}">
+                            <div>${post.author}</div>
+                            <div class="text-muted">${post.content}</div>
+                            ${certificateButton}
+                        </td>
+                        <td class="views-cell">${post.views}</td>
+                    `;
+                    ratingBody.appendChild(row);
                 });
-            }
+            };
+
+            // Симуляція переглядів
+            const simulateViews = () => {
+                document.querySelectorAll('.post-card').forEach(post => {
+                    const postId = post.dataset.postId;
+                    const currentViews = parseInt(localStorage.getItem(`post_${postId}_views`) || 0);
+                    const newViews = currentViews + Math.floor(Math.random() * 5);
+                    localStorage.setItem(`post_${postId}_views`, newViews);
+                });
+                initializeViews();
+                updateRating();
+            };
+
+            // Ініціалізація при завантаженні
+            initializeViews();
+            updateRating();
+
+            // Оновлення кожні 10 секунд
+            setInterval(simulateViews, 10000);
+
+            // Оновлення при відкритті модального вікна
+            document.getElementById('ratingModal').addEventListener('shown.bs.modal', updateRating);
         });
     </script>
 }

@@ -1,61 +1,79 @@
 ﻿@model IEnumerable<LibraryDomain.Model.Post>
 
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Головна";
 }
 
 <div class="container my-4">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            @foreach (var post in Model)
-            {
-                <div class="card my-3 shadow-sm">
-                    <div class="card-header bg-white border-bottom">
-                        <div class="d-flex align-items-center">
-                            <img src="~/images/default-avatar.png" alt="avatar" class="rounded-circle" style="width:40px; height:40px; object-fit:cover; margin-right:10px;">
-                            <div>
-                                <strong>@post.User.UserName</strong>
-                                <br />
-                                <small class="text-muted">@post.CreatedAt.ToString("g")</small>
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <div class="jumbotron bg-white p-5 rounded-3 shadow">
+                <h1 class="display-4 mb-4">Ласкаво просимо до SocialNet! 🌟</h1>
+                <p class="lead">Спілкуйся, ділись моментами та знаходь нових друзів у наших тематичних групах</p>
+                <hr class="my-4">
+                <div class="row features">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-0">
+                            <div class="card-body">
+                                <i class="bi bi-people fs-1 text-primary"></i>
+                                <h5 class="mt-3">Спільноти</h5>
+                                <p>Приєднуйся до груп за інтересами та знаходь однодумців</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <p>@post.Text</p>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-0">
+                            <div class="card-body">
+                                <i class="bi-chat-dots fs-1 text-success"></i>
+                                <h5 class="mt-3">Дописуй</h5>
+                                <p>Ділися своїми думками, фото та відео з друзями</p>
+                            </div>
+                        </div>
                     </div>
-                    @if (post.Comments != null && post.Comments.Any())
-                    {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var comment in post.Comments.OrderBy(c => c.CreatedAt))
-                            {
-                                <li class="list-group-item">
-                                    <div class="d-flex align-items-center mb-1">
-                                        <img src="~/images/default-avatar.png" alt="avatar" class="rounded-circle" style="width:30px; height:30px; object-fit:cover; margin-right:8px;">
-                                        <strong>@comment.User.UserName</strong>
-                                        <small class="text-muted ms-auto">@comment.CreatedAt.ToString("g")</small>
-                                    </div>
-                                    <p class="mb-0">@comment.Text</p>
-                                </li>
-                            }
-                        </ul>
-                    }
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 border-0">
+                            <div class="card-body">
+                                <i class="bi-heart fs-1 text-danger"></i>
+                                <h5 class="mt-3">Реакції</h5>
+                                <p>Висловлюй свої емоції за допомогою лайків та коментарів</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            }
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="mt-4">
+                        <a href="/Identity/Account/Register" class="btn btn-primary btn-lg me-3">Приєднатися</a>
+                        <a href="/Identity/Account/Login" class="btn btn-outline-primary btn-lg">Увійти</a>
+                    </div>
+                }
+            </div>
         </div>
     </div>
+
+    <!-- Пости -->
+
+  
 </div>
 
 <style>
-    body {
-        background-color: #f0f2f5;
+    .jumbotron {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border: 1px solid rgba(0,0,0,0.1);
     }
 
-    .card {
-        border: none;
-        border-radius: 8px;
+    .features .card:hover {
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
     }
 
-    .card-header {
-        border-bottom: 1px solid #e9ecef;
+    .bi {
+        vertical-align: -.125em;
+    }
+
+    .lead {
+        font-size: 1.25rem;
+        color: #6c757d;
     }
 </style>

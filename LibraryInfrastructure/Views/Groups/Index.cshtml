@@ -2,144 +2,231 @@
 
 @{
     ViewData["Title"] = "Групи";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
-    .apple-container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 20px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    .groups-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
     }
 
-    .apple-header {
-        text-align: center;
-        margin-bottom: 30px;
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
 
-        .apple-header h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #333;
-            margin: 0;
+    .search-form {
+        flex-grow: 1;
+        max-width: 600px;
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .search-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0,123,255,0.2);
+            outline: none;
         }
 
-    .apple-create-btn {
-        display: inline-block;
-        padding: 12px 20px;
-        background-color: #0071e3;
-        color: #fff;
+    .search-button {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6c757d;
+    }
+
+    .create-group-btn {
+        background: #007bff;
+        color: white;
+        padding: 0.8rem 1.5rem;
         border-radius: 25px;
         text-decoration: none;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
     }
 
-        .apple-create-btn:hover {
-            background-color: #005bb5;
+        .create-group-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
         }
 
-    .apple-table {
+    .groups-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 1px 15px rgba(0,0,0,0.1);
     }
 
-        .apple-table thead {
-            background-color: #f8f8f8;
-        }
+    .table-header {
+        background: #f8f9fa;
+        border-bottom: 2px solid #e9ecef;
+    }
 
-        .apple-table th,
-        .apple-table td {
-            padding: 15px 10px;
-            border-bottom: 1px solid #e2e2e2;
+        .table-header th {
+            padding: 1.2rem;
             text-align: left;
+            font-weight: 600;
+            color: #495057;
         }
 
-        .apple-table th {
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.1rem;
-            font-weight: 500;
-        }
-
-    .apple-actions a {
-        display: inline-block;
-        margin-right: 10px;
-        padding: 8px 14px;
-        text-decoration: none;
-        font-size: 0.85rem;
-        font-weight: 500;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+    .group-row {
+        border-bottom: 1px solid #e9ecef;
+        transition: all 0.2s ease;
     }
 
-        .apple-actions a.edit {
-            background-color: #0071e3;
-            color: #fff;
+        .group-row:hover {
+            background: #f8f9fa;
         }
 
-        .apple-actions a.details {
-            background-color: #585858;
-            color: #fff;
+        .group-row td {
+            padding: 1.2rem;
+            color: #212529;
         }
 
-        .apple-actions a.delete {
-            background-color: #d0021b;
-            color: #fff;
-        }
+    .group-name {
+        font-weight: 500;
+        color: #1a1a1a;
+    }
 
-        .apple-actions a:hover {
-            opacity: 0.9;
-        }
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-details {
+        background: #28a745;
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .btn-edit {
+        background: #ffc107;
+        color: black;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        text-decoration: none;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        text-decoration: none;
+    }
+
+    .no-groups {
+        text-align: center;
+        padding: 2rem;
+        color: #6c757d;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-top: 1rem;
+    }
 </style>
 
-<div class="apple-container">
-    <div class="apple-header">
+<div class="groups-container">
+    <div class="header-section">
         <h1>Групи</h1>
+        <form asp-action="Search" method="get" class="search-form">
+            <input type="text"
+                   name="query"
+                   class="search-input"
+                   placeholder="Пошук за назвою групи..."
+                   value="@ViewData["CurrentFilter"]">
+            <button type="submit" class="search-button">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="create-group-btn">
+                <i class="bi bi-plus-lg"></i>
+                Нова група
+            </a>
+        }
     </div>
-    <div class="text-center mb-3">
-        <a asp-action="Create" class="apple-create-btn">Створити</a>
-    </div>
-    <div class="table-responsive">
-        <table class="apple-table">
-            <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.First().Name)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().Info)</th>
-                    <th>@Html.DisplayNameFor(model => model.First().CreatedAt)</th>
-                    <th>Дії</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Any())
+
+    <table class="groups-table">
+        <thead class="table-header">
+            <tr>
+                <th>Назва</th>
+                <th>Опис</th>
+                <th>Дата створення</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
                 {
-                    foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Info)</td>
-                            <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
-                            <td class="apple-actions">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="edit">Редагувати</a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="details">Деталі</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="delete">Видалити</a>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="4" class="text-center">Немає записів</td>
+                    <tr class="group-row">
+                        <td class="group-name">@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Info)</td>
+                        <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a asp-action="UserGroup" asp-route-id="Create" class="btn-details">
+                                    <i class="bi bi-eye"></i>
+                                    Приєднатись
+                                </a> 
+                                <a asp-action="Create" asp-route-id="@item.Id" class="btn-details">
+                                    <i class="bi bi-eye"></i>
+                                    Створити
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn-details">
+                                    <i class="bi bi-eye"></i>
+                                    Деталі
+                                </a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn-edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn-delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                }
+                            </div>
+                        </td>
                     </tr>
                 }
-            </tbody>
-        </table>
-    </div>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="no-groups">
+                        <i class="bi bi-info-circle" style="font-size: 2rem;"></i>
+                        <p style="margin-top: 1rem;">Груп не знайдено</p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

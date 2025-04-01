@@ -11,6 +11,5 @@ namespace LibraryDomain.Model
         public virtual ICollection<Friendship> FriendshipUser1s { get; set; } = new List<Friendship>();
         public virtual ICollection<Friendship> FriendshipUser2s { get; set; } = new List<Friendship>();
         public virtual ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
-        public string? PhotoUrl { get; set; }  // URL до фото профілю
     }
 }

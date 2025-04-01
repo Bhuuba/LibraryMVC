@@ -1,0 +1,33 @@
+﻿@model IEnumerable<LibraryDomain.Model.User>
+
+@{
+    ViewData["Title"] = "Результати пошуку";
+}
+
+<h2>Результати пошуку</h2>
+
+@if (!Model.Any())
+{
+    <p>За запитом нічого не знайдено.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Email</th>
+                <!-- Додайте інші колонки за потреби -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,92 +1,106 @@
-﻿@model LibraryDomain.Model.Friendship
+﻿@model LibraryDomain.Model.User
 
 @{
-    ViewData["Title"] = "Створити дружбу";
+    ViewData["Title"] = "Додати користувача";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
-    .apple-form-container {
+    .create-user-container {
         max-width: 600px;
-        margin: 40px auto;
-        padding: 20px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        background-color: #fff;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .create-user-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .create-user-title {
+        font-size: 1.8rem;
+        color: #1a1a1a;
+        margin: 0;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        transition: all 0.2s ease;
     }
 
-        .apple-form-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 600;
+        .form-control:focus {
+            border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0,122,255,0.1);
         }
 
-    .apple-input {
-        margin-bottom: 15px;
-    }
-
-        .apple-input label {
-            font-weight: 500;
-        }
-
-    .apple-submit-btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #0071e3;
-        color: #fff;
-        border-radius: 25px;
-        text-decoration: none;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: background-color 0.3s ease;
-        margin-right: 10px;
+    .submit-btn {
+        width: 100%;
+        padding: 1rem;
+        background: #007aff;
+        color: white;
         border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.2s ease;
     }
 
-        .apple-submit-btn:hover {
-            background-color: #005bb5;
+        .submit-btn:hover {
+            background: #0063cc;
         }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #007aff;
+        text-decoration: none;
+    }
 </style>
 
-<div class="apple-form-container">
-    <h2>Створити дружбу</h2>
+<div class="create-user-container">
+    <div class="create-user-header">
+        <h1 class="create-user-title">Додати нового користувача</h1>
+    </div>
+
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <!-- ID введення вручну -->
-        <div class="apple-input">
-            <label asp-for="Id" class="control-label"></label>
-            <input asp-for="Id" class="form-control" />
-            <span asp-validation-for="Id" class="text-danger"></span>
+        <div class="form-group">
+            <label class="form-label">Ім'я користувача</label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
         </div>
 
-        <div class="apple-input">
-            <label asp-for="User1Id" class="control-label"></label>
-            <select asp-for="User1Id" class="form-control" asp-items="ViewBag.User1Id"></select>
-            <span asp-validation-for="User1Id" class="text-danger"></span>
+        <div class="form-group">
+            <label class="form-label">Email адреса</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
-        <div class="apple-input">
-            <label asp-for="User2Id" class="control-label"></label>
-            <select asp-for="User2Id" class="form-control" asp-items="ViewBag.User2Id"></select>
-            <span asp-validation-for="User2Id" class="text-danger"></span>
+        <div class="form-group">
+            <label class="form-label">Пароль</label>
+            <input asp-for="PasswordHash" type="password" class="form-control" />
+            <span asp-validation-for="PasswordHash" class="text-danger"></span>
         </div>
 
-        <div class="apple-input">
-            <label asp-for="Status" class="control-label"></label>
-            <input asp-for="Status" class="form-control" />
-            <span asp-validation-for="Status" class="text-danger"></span>
-        </div>
-
-        <div class="apple-input">
-            <label asp-for="CreatedAt" class="control-label"></label>
-            <input asp-for="CreatedAt" class="form-control" />
-            <span asp-validation-for="CreatedAt" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="apple-submit-btn">Створити</button>
-        <a asp-action="Index" class="apple-submit-btn" style="background-color: #585858;">Повернутися</a>
+        <button type="submit" class="submit-btn">Створити користувача</button>
+        <a asp-action="Index" class="back-link">Повернутися до списку</a>
     </form>
 </div>
 

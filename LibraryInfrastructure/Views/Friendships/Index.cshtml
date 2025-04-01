@@ -3,124 +3,137 @@
 @{
     ViewData["Title"] = "Дружба";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    // Якщо використовуєте Layout з Bootstrap, його стилі можуть частково впливати на верстку.
 }
 
 <style>
     .apple-container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 20px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
 
     .apple-header {
-        text-align: center;
-        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #f0f0f0;
     }
 
         .apple-header h1 {
             font-size: 2rem;
-            font-weight: 600;
-            color: #333;
+            color: #1a1a1a;
             margin: 0;
         }
 
     .apple-create-btn {
-        display: inline-block;
-        padding: 12px 20px;
-        background-color: #0071e3;
+        background: #0071e3;
         color: #fff;
-        border-radius: 25px;
+        padding: 12px 24px;
+        border-radius: 8px;
         text-decoration: none;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: background-color 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
     }
 
         .apple-create-btn:hover {
-            background-color: #005bb5;
+            background: #005bb5;
+            transform: translateY(-2px);
         }
 
-    /* Таблиця */
     .apple-table {
         width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+        border-collapse: separate;
+        border-spacing: 0 12px;
     }
 
-        .apple-table thead {
-            background-color: #f8f8f8;
-        }
-
-        .apple-table th,
-        .apple-table td {
-            padding: 15px 10px;
-            border-bottom: 1px solid #e2e2e2;
-            text-align: left; /* Можна змінити на center/right, якщо треба */
-            vertical-align: middle; /* Вирівнювання по вертикалі */
-        }
-
-        .apple-table th {
+        .apple-table thead th {
+            padding: 16px;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.1rem;
-            font-weight: 500;
+            border-bottom: 2px solid #e9ecef;
         }
 
-    /* Дії (кнопки) */
+        .apple-table tbody tr {
+            background: #fff;
+            transition: all 0.2s ease;
+            border-radius: 8px;
+        }
+
+            .apple-table tbody tr:hover {
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            }
+
+        .apple-table td {
+            padding: 16px;
+            vertical-align: middle;
+            border-bottom: 1px solid #eee;
+        }
+
+    .status-tag {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-accepted {
+        background: #d4edda;
+        color: #155724;
+    }
+
     .apple-actions {
-        /* Якщо хочете, щоб кнопки вишикувалися в один ряд з проміжком: */
         display: flex;
         gap: 8px;
     }
 
         .apple-actions a {
-            display: inline-block;
-            padding: 8px 14px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            color: #fff; /* Загальний колір тексту для кнопок */
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-            .apple-actions a.edit {
-                background-color: #0071e3;
-            }
-
-            .apple-actions a.details {
-                background-color: #585858;
-            }
-
-            .apple-actions a.delete {
-                background-color: #d0021b;
-            }
-
-            .apple-actions a:hover {
-                opacity: 0.9;
-            }
+    .no-records {
+        text-align: center;
+        padding: 2rem;
+        color: #6c757d;
+        font-style: italic;
+    }
 </style>
 
 <div class="apple-container">
     <div class="apple-header">
-        <h1>Дружба</h1>
+        <h1>Керування дружбою</h1>
+        <a asp-action="Create" class="apple-create-btn">
+            <i class="bi bi-person-add"></i>
+            Новий запит
+        </a>
     </div>
-    <!-- Якщо хочете вирівняти кнопку праворуч — можна inline-стиль або власний клас -->
-    <div style="text-align: right; margin-bottom: 20px;">
-        <a asp-action="Create" class="apple-create-btn">Створити</a>
-    </div>
+
     <table class="apple-table">
         <thead>
             <tr>
                 <th>Статус</th>
-                <th>Дата</th>
-                <th>Юзер 1</th>
-                <th>Юзер 2</th>
+                <th>Дата запиту</th>
+                <th>Відправник</th>
+                <th>Отримувач</th>
                 <th>Дії</th>
             </tr>
         </thead>
@@ -130,15 +143,24 @@
                 foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.Status)</td>
-                        <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
-                        <td>@Html.DisplayFor(modelItem => item.User1.Email)</td>
-                        <td>@Html.DisplayFor(modelItem => item.User2.Email)</td>
+                        <td>
+                            <span class="status-tag @(item.Status == "Accepted" ? "status-accepted" : "status-pending")">
+                                @item.Status
+                            </span>
+                        </td>
+                        <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@item.User1.Email</td>
+                        <td>@item.User2.Email</td>
                         <td>
                             <div class="apple-actions">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="edit">Редагувати</a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="details">Деталі</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="delete">Видалити</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="edit">
+                                    <i class="bi bi-pencil"></i>
+                                    Змінити
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="delete">
+                                    <i class="bi bi-trash"></i>
+                                    Видалити
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -147,7 +169,10 @@
             else
             {
                 <tr>
-                    <td colspan="5" style="text-align: center;">Немає записів</td>
+                    <td colspan="5" class="no-records">
+                        <i class="bi bi-people" style="font-size: 1.5rem;"></i>
+                        <div style="margin-top: 1rem;">Поки що немає активних запитів</div>
+                    </td>
                 </tr>
             }
         </tbody>

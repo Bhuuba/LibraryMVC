@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LibraryInfrastructure</title>
+    <title>@ViewData["Title"] - MySocial</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LibraryInfrastructure.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: #f5f5f7;
             color: #333;
         }
-        /* Header у стилі соціальної мережі */
+
         header {
             background-color: #4267B2;
             padding: 0.5rem 1rem;
@@ -24,21 +25,47 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: #fff !important;
+            letter-spacing: -0.5px;
         }
 
         .navbar-nav .nav-link {
             color: #fff !important;
-            margin-right: 1rem;
+            margin-right: 1.5rem;
             font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
             .navbar-nav .nav-link:hover {
                 color: #dfe3ee !important;
+                transform: translateY(-2px);
             }
-        /* Форма пошуку */
-        .search-box input {
+
+        .search-form {
+            position: relative;
+            max-width: 300px;
+        }
+
+        .search-input {
             border-radius: 20px;
-            padding-right: 2.5rem;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white !important;
+        }
+
+            .search-input::placeholder {
+                color: rgba(255,255,255,0.7) !important;
+            }
+
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
         }
 
         .container {
@@ -47,78 +74,220 @@
         }
 
         footer {
-            font-size: 0.9rem;
-            color: #555;
+            background: #ffffff;
+            border-top: 1px solid #e9ecef;
+            padding: 1.5rem 0;
+            margin-top: auto;
         }
 
             footer a {
                 color: #0071e3;
                 text-decoration: none;
+                transition: color 0.3s ease;
             }
 
                 footer a:hover {
                     color: #005bb5;
                 }
+
+        @@media (max-width: 991.98px) {
+            .navbar-collapse {
+                padding-top: 1rem;
+            }
+
+            .search-form {
+                margin-top: 1rem;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <!-- Логотип -->
-                <a class="navbar-brand" href="@Url.Action("Index", "Home")">MySocial</a>
-                <!-- Кнопка для мобільного меню -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSocial" aria-controls="navbarSocial" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <i class="bi bi-people-fill me-2"></i>
+                    MySocial
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSocial">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <!-- Контент хедера -->
+
                 <div class="collapse navbar-collapse" id="navbarSocial">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Юзери</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Groups" asp-action="Index">Групи</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Friendships" asp-action="Index">Друзі</a>
-                        </li>
-                        @* Цей пункт буде видно лише адміністратору *@
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Usergroups" asp-action="Index">Юзери в групах</a>
+                                <a class="nav-link" asp-controller="Users" asp-action="Index">
+                                    <i class="bi bi-person-gear me-1"></i>Юзери
+                                </a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="Index">Пости</a>
+                            <a class="nav-link" asp-controller="Groups" asp-action="Index">
+                                <i class="bi bi-collection me-1"></i>Групи
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Friendships" asp-action="Index">
+                                <i class="bi bi-people me-1"></i>Друзі
+                            </a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Usergroups" asp-action="Index">
+                                    <i class="bi bi-diagram-3 me-1"></i>У групах
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Posts" asp-action="Index">
+                                <i class="bi bi-chat-dots me-1"></i>Пости
+                            </a>
                         </li>
                     </ul>
-                    @* Форма пошуку відображається лише адміністратору *@
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        <form class="d-flex" role="search" method="get" action="@Url.Action("Search", "Users")">
-                            <input class="form-control" type="search" placeholder="Пошук юзерів" aria-label="Search" name="query">
-                            <button class="btn btn-outline-light ms-2" type="submit">Пошук</button>
-                        </form>
+                        <div class="d-flex align-items-center gap-3">
+                            <form class="d-flex search-form" method="get" id="globalSearchForm">
+                                <select class="form-select search-select"
+                                        aria-label="Тип пошуку"
+                                        id="searchType">
+                                    <option value="Users">Користувачі</option>
+                                    <option value="Groups">Групи</option>
+                                    <option value="Posts">Пости</option>
+                                </select>
+                                <input class="form-control search-input"
+                                       type="search"
+                                       placeholder="Пошук..."
+                                       aria-label="Пошук"
+                                       name="query"
+                                       required>
+                                <button class="search-btn" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </form>
+                            <div class="ms-2">
+                                <partial name="_LoginPartial" />
+                            </div>
+                        </div>
                     }
-                    <div class="ms-3">
-                        <partial name="_LoginPartial" />
-                    </div>
+                    else
+                    {
+                        <div class="ms-auto">
+                            <partial name="_LoginPartial" />
+                        </div>
+                    }
                 </div>
             </div>
         </nav>
     </header>
+
+    <style>
+        .search-form {
+            position: relative;
+            max-width: 500px;
+            flex-grow: 1;
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-select {
+            width: 140px;
+            background: rgba(255,255,255,0.1) !important;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+            color: white !important;
+            border-radius: 20px !important;
+            padding: 8px 16px !important;
+            appearance: none;
+        }
+
+            .search-select option {
+                background: #4267B2;
+                color: white;
+            }
+
+        .search-input {
+            flex-grow: 1;
+            border-radius: 20px;
+            padding: 8px 48px 8px 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.8);
+            padding: 0;
+        }
+
+        @@media (max-width: 992px) {
+            .search-form {
+                width: 100%;
+                max-width: 100%;
+                margin-top: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .search-select {
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+                padding-right: 40px;
+            }
+        }
+    </style>
+
+    <script>
+        document.getElementById('searchType').addEventListener('change', function() {
+            document.getElementById('globalSearchForm').action = `/${this.value}/Search`;
+        });
+
+        document.getElementById('globalSearchForm').addEventListener('submit', function(e) {
+            if (!this.query.value.trim()) {
+                e.preventDefault();
+                alert('Будь ласка, введіть пошуковий запит');
+            }
+        });
+
+        // Ініціалізація при завантаженні
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchType = document.getElementById('searchType');
+            document.getElementById('globalSearchForm').action = `/${searchType.value}/Search`;
+        });
+    </script>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-    <footer class="border-top pt-3">
+
+    <footer class="border-top">
         <div class="container text-center">
-            &copy; 2025 - LibraryInfrastructure - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="d-flex justify-content-center gap-3 mb-2">
+                <a href="/about">Про нас</a>
+                <a href="/terms">Умови використання</a>
+                <a href="/contact">Контакти</a>
+            </div>
+            <div class="text-muted">
+                &copy; 2025 MySocial - <a asp-controller="Home" asp-action="Privacy">Політика конфіденційності</a>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

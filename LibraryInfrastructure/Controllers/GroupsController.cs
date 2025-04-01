@@ -24,7 +24,22 @@ namespace LibraryInfrastructure.Controllers
         {
             return View(await _context.Groups.ToListAsync());
         }
+        // GET: Groups/Search
+        [HttpGet]
+        public async Task<IActionResult> Search(string query)
+        {
+            ViewData["CurrentFilter"] = query;
 
+            var groups = from g in _context.Groups
+                         select g;
+
+            if (!String.IsNullOrEmpty(query))
+            {
+                groups = groups.Where(g => g.Name.Contains(query));
+            }
+
+            return View("Index", await groups.ToListAsync());
+        }
         // GET: Groups/Details/5
         public async Task<IActionResult> Details(int? id)
         {
