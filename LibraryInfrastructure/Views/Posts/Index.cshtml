@@ -1,0 +1,218 @@
+﻿@model IEnumerable<LibraryDomain.Model.Post>
+
+@{
+    ViewData["Title"] = "Пости";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .feed-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .post-card {
+        border: 1px solid #e2e2e2;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+        .post-card .card-header {
+            background-color: #f8f8f8;
+            padding: 10px 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .post-card .card-header .post-author {
+                color: #333;
+            }
+
+            .post-card .card-header .post-date {
+                color: #888;
+                font-size: 0.85rem;
+            }
+
+        .post-card .card-body {
+            padding: 15px;
+        }
+
+            .post-card .card-body p {
+                margin: 0;
+            }
+
+        .post-card .card-footer {
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+    .create-btn, .stats-btn, .get-pdf-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #0071e3;
+        color: #fff;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+    }
+
+    .stats-btn {
+        background-color: #585858;
+    }
+
+        .create-btn:hover,
+        .stats-btn:hover,
+        .get-pdf-btn:hover {
+            background-color: #005bb5;
+        }
+</style>
+
+<div class="feed-container">
+    <div class="mb-3 text-center">
+        <h1>Пости</h1>
+        <a asp-action="Create" class="create-btn">Додати пост</a>
+        <button type="button" class="stats-btn" data-bs-toggle="modal" data-bs-target="#chartModal">
+            Показати статистику
+        </button>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var post in Model)
+        {
+            <div class="post-card" data-post-id="@post.Id">
+                <div class="card-header">
+                    <span class="post-author">@post.User?.Email</span>
+                    <span class="post-date">@post.CreateAt.ToString("dd.MM.yyyy")</span>
+                </div>
+                <div class="card-body">
+                    <p>@post.Text</p>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Details" asp-route-id="@post.Id" class="create-btn">Коментарі</a>
+                    <div>
+                        <span class="view-count" data-post-id="@post.Id">0</span> переглядів
+                        <!-- Контейнер для кнопки PDF (буде додано, якщо цей пост має максимальний лічильник) -->
+                        <span class="pdf-btn-container"></span>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="text-center">Немає записів</p>
+    }
+</div>
+
+<!-- Модальне вікно для статистики -->
+<div class="modal fade" id="chartModal" tabindex="-1" aria-labelledby="chartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chartModalLabel">Статистика постів за роками</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="postsByYearChart" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jsPDF для генерації PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        // Завантаження Google Charts
+        google.charts.load('current', { 'packages': ['corechart'] });
+        function drawPostsByYearChart() {
+            fetch('/api/charts/countPostsByYear')
+                .then(response => response.json())
+                .then(data => {
+                    const dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'Рік');
+                    dataTable.addColumn('number', 'Кількість постів');
+                    data.forEach(item => {
+                        dataTable.addRow([item.year, item.count]);
+                    });
+                    const options = {
+                        title: 'Пости за роками',
+                        width: '100%',
+                        height: 400,
+                        legend: { position: 'none' }
+                    };
+                    const chart = new google.visualization.ColumnChart(document.getElementById('postsByYearChart'));
+                    chart.draw(dataTable, options);
+                });
+        }
+
+        // Функціонал для відображення лічильника переглядів і додавання кнопки PDF для поста з максимумом переглядів
+        document.addEventListener('DOMContentLoaded', () => {
+            const viewCountElements = document.querySelectorAll('.view-count');
+            let maxCount = 0;
+            let maxPostIds = [];
+
+            // Отримання значень з localStorage для кожного поста
+            viewCountElements.forEach(el => {
+                const postId = el.getAttribute('data-post-id');
+                const storageKey = `post_${postId}_viewCount`;
+                const count = parseInt(localStorage.getItem(storageKey)) || 0;
+                el.innerText = count;
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxPostIds = [postId];
+                } else if (count === maxCount && count !== 0) {
+                    maxPostIds.push(postId);
+                }
+            });
+
+            // Додаємо кнопку "Отримати нагороду" для постів з максимальним лічильником переглядів
+            maxPostIds.forEach(postId => {
+                const card = document.querySelector(`.post-card[data-post-id='${postId}']`);
+                if (card) {
+                    const btnContainer = card.querySelector('.pdf-btn-container');
+                    if (btnContainer) {
+                        const pdfButton = document.createElement('button');
+                        pdfButton.innerText = "Отримати нагороду";
+                        pdfButton.className = "get-pdf-btn";
+                        pdfButton.addEventListener('click', () => {
+                            const { jsPDF } = window.jspdf;
+                            const doc = new jsPDF();
+                            doc.text("Ви великий молодець!", 10, 10);
+                            doc.save("reward.pdf");
+                        });
+                        btnContainer.appendChild(pdfButton);
+                    }
+                }
+            });
+        });
+
+        // Ініціалізація Google Charts при відкритті модального вікна
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartModal = document.getElementById('chartModal');
+            if (chartModal) {
+                chartModal.addEventListener('shown.bs.modal', () => {
+                    drawPostsByYearChart();
+                });
+            }
+        });
+    </script>
+}

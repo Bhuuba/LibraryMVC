@@ -1,0 +1,171 @@
+﻿@model IEnumerable<LibraryDomain.Model.Coment>
+
+@{
+    ViewData["Title"] = "Коментарі";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .comments-container {
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment {
+        display: flex;
+        align-items: flex-start;
+        border-bottom: 1px solid #e2e2e2;
+        padding: 15px 0;
+    }
+
+        .comment:last-child {
+            border-bottom: none;
+        }
+
+    .comment-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #0071e3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        margin-right: 15px;
+    }
+
+    .comment-content {
+        flex: 1;
+    }
+
+    .comment-author {
+        font-weight: bold;
+        color: #0071e3;
+        margin-bottom: 5px;
+    }
+
+    .comment-date {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .comment-text {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .comment-actions {
+        margin-top: 10px;
+    }
+
+        .comment-actions a {
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-right: 10px;
+            color: #0071e3;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+            .comment-actions a:hover {
+                color: #005bb5;
+            }
+
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        position: relative;
+    }
+
+    .certificate-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="comments-container">
+    <h1 style="text-align: center;">Коментарі</h1>
+    <div>
+        <a asp-action="Index" asp-controller="Posts" class="btn btn-secondary">Повернутися до постів</a>
+        <a asp-action="Create" class="btn btn-primary">Додати коментар</a>
+        <button id="openCertificatePopup" class="btn btn-info">Сертифікат</button>
+        <div id="certificatePopup" class="popup-overlay" style="display: none;">
+            <div class="popup-content">
+                <img src="/files/a.png" alt="Сертифікат" class="certificate-image">
+                <a href="/files/f.pdf" download class="btn btn-success">Скачати сертифікат</a>
+                <button id="closePopup" >Закрити</button>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="comments-list">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <div class="comment">
+                    <div class="comment-avatar">
+                        @item.User?.Email.Substring(0, 1).ToUpper()
+                    </div>
+                    <div class="comment-content">
+                        <div class="comment-author">@item.User?.Email</div>
+                        <div class="comment-date">@item.CreateAt.ToString("dd.MM.yyyy HH:mm")</div>
+                        <div class="comment-text">@item.Text</div>
+                        <div class="comment-actions">
+                            <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" style="color: red;">Видалити</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p style="text-align: center; margin-top: 20px; color: #666;">Немає коментарів</p>
+        }
+    </div>
+</div>
+<script>
+    document.getElementById('openCertificatePopup').addEventListener('click', function () {
+        document.getElementById('certificatePopup').style.display = 'flex';
+    });
+
+    document.getElementById('closePopup').addEventListener('click', function () {
+        document.getElementById('certificatePopup').style.display = 'none';
+    });
+</script>

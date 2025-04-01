@@ -1,0 +1,97 @@
+﻿@model LibraryDomain.Model.User
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .apple-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .apple-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .apple-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+    .apple-details dt {
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 5px;
+    }
+
+    .apple-details dd {
+        margin: 0 0 15px 0;
+        color: #333;
+    }
+
+    .apple-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #d0021b;
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+
+        .apple-btn:hover {
+            background-color: #b00018;
+        }
+
+    .apple-link {
+        text-decoration: none;
+        color: #0071e3;
+        font-weight: 500;
+        margin-left: 15px;
+        transition: color 0.3s ease;
+    }
+
+        .apple-link:hover {
+            color: #005bb5;
+        }
+</style>
+
+<div class="apple-container">
+    <div class="apple-header">
+        <h1>Видалення юзера</h1>
+    </div>
+    <p>Ви дійсно бажаєте видалити юзера?</p>
+    <hr />
+    <dl class="apple-details">
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+        <dd>@Html.DisplayFor(model => model.Email)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Birthdate)</dt>
+        <dd>@Html.DisplayFor(model => model.Birthdate)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Password)</dt>
+        <dd>****</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Status)</dt>
+        <dd>@Html.DisplayFor(model => model.Status)</dd>
+    </dl>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="apple-btn">Видалити</button>
+        <a asp-action="Index" class="apple-link">Повернутись</a>
+    </form>
+</div>

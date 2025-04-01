@@ -1,0 +1,102 @@
+﻿@model LibraryDomain.Model.Friendship
+
+@{
+    ViewData["Title"] = "Деталі дружби";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Якщо хочете, можна залишити для загальних елементів
+}
+
+<style>
+    /* Контейнер */
+    .apple-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Заголовок */
+    .apple-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .apple-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+    /* Горизонтальна лінія */
+    .apple-hr {
+        border: none;
+        border-top: 1px solid #e2e2e2;
+        margin: 0 0 20px 0;
+    }
+
+    /* Список властивостей (dt, dd) */
+    .apple-dl {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+    }
+
+        .apple-dl dt {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .apple-dl dd {
+            margin: 0 0 10px 0;
+            color: #555;
+        }
+
+    /* Посилання-кнопки (Редагувати, Назад) */
+    .apple-links {
+        margin-top: 20px;
+    }
+
+    .apple-link {
+        color: #0071e3;
+        text-decoration: none;
+        font-weight: 500;
+        margin-right: 15px;
+    }
+
+        .apple-link:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="apple-container">
+    <div class="apple-header">
+        <h1>Деталі дружби</h1>
+    </div>
+    <hr class="apple-hr" />
+    <dl class="apple-dl">
+        <dt>@Html.DisplayNameFor(model => model.Status)</dt>
+        <dd>@Html.DisplayFor(model => model.Status)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.CreateAt)</dt>
+        <dd>@Html.DisplayFor(model => model.CreateAt)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.User1)</dt>
+        <dd>@Html.DisplayFor(model => model.User1.Email)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.User2)</dt>
+        <dd>@Html.DisplayFor(model => model.User2.Email)</dd>
+    </dl>
+    <div class="apple-links">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="apple-link">Редагувати</a>
+        <a asp-action="Index" class="apple-link">Повернутись до списку</a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

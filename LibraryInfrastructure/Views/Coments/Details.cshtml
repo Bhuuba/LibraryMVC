@@ -1,0 +1,72 @@
+﻿@model LibraryDomain.Model.Coment
+
+@{
+    ViewData["Title"] = "Деталі коментаря";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .apple-details-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+        .apple-details-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+    .details-row {
+        margin-bottom: 10px;
+    }
+
+    .details-label {
+        font-weight: 500;
+    }
+
+    .apple-submit-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #0071e3;
+        color: #fff;
+        border-radius: 25px;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+        border: none;
+    }
+
+        .apple-submit-btn:hover {
+            background-color: #005bb5;
+        }
+</style>
+
+<div class="apple-details-container">
+    <h2>Деталі коментаря</h2>
+    <hr />
+
+    <div class="details-row">
+        <span class="details-label">Текст:</span> @Model.Text
+    </div>
+    <div class="details-row">
+        <span class="details-label">Дата створення:</span> @Model.CreateAt
+    </div>
+    <div class="details-row">
+        <span class="details-label">Пост:</span> @Model.Post?.Text
+    </div>
+    <div class="details-row">
+        <span class="details-label">Автор:</span> @Model.User?.Email
+    </div>
+
+    <hr />
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="apple-submit-btn">Редагувати</a>
+    <a asp-action="Index" class="apple-submit-btn" style="background-color: #585858;">Повернутися</a>
+</div>

@@ -1,0 +1,110 @@
+﻿@model LibraryDomain.Model.Group
+
+@{
+    ViewData["Title"] = "Деталі групи";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Apple-inspired стиль для детальної сторінки групи */
+    .apple-details-container {
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .apple-details-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .apple-details-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+    .apple-details dl dt {
+        font-weight: 500;
+        color: #555;
+    }
+
+    .apple-details dl dd {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .apple-details-actions {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+        .apple-details-actions a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+            .apple-details-actions a.edit {
+                background-color: #0071e3;
+                color: #fff;
+            }
+
+                .apple-details-actions a.edit:hover {
+                    background-color: #005bb5;
+                }
+
+            .apple-details-actions a.back {
+                background-color: #ccc;
+                color: #333;
+            }
+
+                .apple-details-actions a.back:hover {
+                    background-color: #bbb;
+                }
+</style>
+
+<div class="apple-details-container">
+    <div class="apple-details-header">
+        <h1>Деталі групи</h1>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            Інформація про групу
+        </div>
+        <div class="card-body apple-details">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Info)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Info)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.CreateAt)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.CreateAt)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="apple-details-actions">
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="edit">Редагувати</a>
+        <a asp-action="Index" class="back">Повернутись</a>
+    </div>
+</div>

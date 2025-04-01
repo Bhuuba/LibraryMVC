@@ -1,0 +1,92 @@
+﻿@model LibraryDomain.Model.Post
+
+@{
+    ViewData["Title"] = "Edit Post";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .apple-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .apple-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .apple-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+    .form-group label {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        border-radius: 4px;
+        border: 1px solid #e2e2e2;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .apple-create-btn {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #0071e3;
+        color: #fff;
+        border-radius: 25px;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+    }
+
+        .apple-create-btn:hover {
+            background-color: #005bb5;
+        }
+</style>
+
+<div class="apple-container">
+    <div class="apple-header">
+        <h1>Edit Post</h1>
+    </div>
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="UserId" class="control-label"></label>
+            <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId">
+                <option value="">-- Select a user --</option>
+            </select>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Text" class="control-label"></label>
+            <input asp-for="Text" class="form-control" />
+            <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CreateAt" class="control-label"></label>
+            <input asp-for="CreateAt" class="form-control" type="datetime-local" />
+            <span asp-validation-for="CreateAt" class="text-danger"></span>
+        </div>
+        <input type="submit" value="Save" class="apple-create-btn" />
+    </form>
+    <a asp-action="Index" class="apple-create-btn" style="background-color: #585858;">Back to List</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

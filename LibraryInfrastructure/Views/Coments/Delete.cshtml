@@ -1,0 +1,77 @@
+﻿@model LibraryDomain.Model.Coment
+
+@{
+    ViewData["Title"] = "Видалити коментар";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .apple-delete-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+        .apple-delete-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+    .details-row {
+        margin-bottom: 10px;
+    }
+
+    .details-label {
+        font-weight: 500;
+    }
+
+    .apple-submit-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #d0021b;
+        color: #fff;
+        border-radius: 25px;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+        border: none;
+    }
+
+        .apple-submit-btn:hover {
+            opacity: 0.9;
+        }
+</style>
+
+<div class="apple-delete-container">
+    <h2>Видалити коментар?</h2>
+    <p>Ви впевнені, що хочете видалити цей коментар?</p>
+    <hr />
+
+    <div class="details-row">
+        <span class="details-label">Текст:</span> @Model.Text
+    </div>
+    <div class="details-row">
+        <span class="details-label">Дата створення:</span> @Model.CreateAt
+    </div>
+    <div class="details-row">
+        <span class="details-label">Пост:</span> @Model.Post?.Text
+    </div>
+    <div class="details-row">
+        <span class="details-label">Автор:</span> @Model.User?.Email
+    </div>
+
+    <hr />
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="apple-submit-btn">Видалити</button>
+        <a asp-action="Index" class="apple-submit-btn" style="background-color: #585858;">Повернутися</a>
+    </form>
+</div>
