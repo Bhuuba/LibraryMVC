@@ -62,7 +62,7 @@
     <h1>Деталі поста</h1>
     <div class="post-detail">
         <p><span class="label">Текст:</span> @Model.Text</p>
-        <p><span class="label">Дата:</span> @Model.CreateAt.ToString("dd.MM.yyyy")</p>
+        <p><span class="label">Дата:</span> @Model.CreatedAt.ToString("dd.MM.yyyy")</p>
         <p><span class="label">Користувач:</span> @Model.User?.Email</p>
         <p><span class="label">Перегляди:</span> <span id="viewCount">0</span></p>
     </div>

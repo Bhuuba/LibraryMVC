@@ -12,9 +12,9 @@ namespace LibraryInfrastructure.Controllers
 {
     public class ComentsController : Controller
     {
-        private readonly DblibraryContext _context;
+        private readonly SocialNetworkContext _context;
 
-        public ComentsController(DblibraryContext context)
+        public ComentsController(SocialNetworkContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace LibraryInfrastructure.Controllers
         // GET: Coments
         public async Task<IActionResult> Index()
         {
-            var dblibraryContext = _context.Coments.Include(c => c.Post).Include(c => c.User);
+            var dblibraryContext = _context.Comments.Include(c => c.Post).Include(c => c.User);
             return View(await dblibraryContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace LibraryInfrastructure.Controllers
                 return NotFound();
             }
 
-            var coment = await _context.Coments
+            var coment = await _context.Comments
                 .Include(c => c.Post)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -59,7 +59,7 @@ namespace LibraryInfrastructure.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,PostId,Text,CreateAt")] Coment coment)
+        public async Task<IActionResult> Create([Bind("Id,UserId,PostId,Text,CreateAt")] Comment coment)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace LibraryInfrastructure.Controllers
                 return NotFound();
             }
 
-            var coment = await _context.Coments.FindAsync(id);
+            var coment = await _context.Comments.FindAsync(id);
             if (coment == null)
             {
                 return NotFound();
@@ -95,7 +95,7 @@ namespace LibraryInfrastructure.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,PostId,Text,CreateAt")] Coment coment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,PostId,Text,CreateAt")] Comment coment)
         {
             if (id != coment.Id)
             {
@@ -150,7 +150,7 @@ namespace LibraryInfrastructure.Controllers
                 return NotFound();
             }
 
-            var coment = await _context.Coments
+            var coment = await _context.Comments
                 .Include(c => c.Post)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -167,10 +167,10 @@ namespace LibraryInfrastructure.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var coment = await _context.Coments.FindAsync(id);
+            var coment = await _context.Comments.FindAsync(id);
             if (coment != null)
             {
-                _context.Coments.Remove(coment);
+                _context.Comments.Remove(coment);
             }
 
             await _context.SaveChangesAsync();
@@ -179,7 +179,7 @@ namespace LibraryInfrastructure.Controllers
 
         private bool ComentExists(int id)
         {
-            return _context.Coments.Any(e => e.Id == id);
+            return _context.Comments.Any(e => e.Id == id);
         }
     }
 }

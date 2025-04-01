@@ -12,9 +12,9 @@ namespace LibraryInfrastructure.Controllers
 {
     public class GroupsController : Controller
     {
-        private readonly DblibraryContext _context;
+        private readonly SocialNetworkContext _context;
 
-        public GroupsController(DblibraryContext context)
+        public GroupsController(SocialNetworkContext context)
         {
             _context = context;
         }
@@ -58,7 +58,7 @@ namespace LibraryInfrastructure.Controllers
             if (ModelState.IsValid)
             {
                 // Примусово встановлюємо поточну дату та час
-                group.CreateAt = DateTime.Now;
+                group.CreatedAt = DateTime.Now;
 
                 _context.Add(group);
                 await _context.SaveChangesAsync();

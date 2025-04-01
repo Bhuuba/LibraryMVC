@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LibraryDomain.Model;
 using LibraryInfrastructure;
-using System.Xml.Linq;
 
 namespace LibraryInfrastructure.Controllers
 {
+    // Доступ до цього контролера матимуть лише користувачі з роллю Admin
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
-        private readonly DblibraryContext _context;
+        private readonly SocialNetworkContext _context;
 
-        public UsersController(DblibraryContext context)
+        public UsersController(SocialNetworkContext context)
         {
             _context = context;
         }
@@ -26,8 +23,25 @@ namespace LibraryInfrastructure.Controllers
             return View(await _context.Users.ToListAsync());
         }
 
+        // GET: Users/Search?query=...
+        public async Task<IActionResult> Search(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                // Якщо пошуковий запит порожній, повертаємо порожній список
+                return View(new List<User>());
+            }
+
+            // Пошук користувачів по UserName
+            var results = await _context.Users
+                .Where(u => u.UserName.Contains(query))
+                .ToListAsync();
+
+            return View(results);
+        }
+
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -41,29 +55,9 @@ namespace LibraryInfrastructure.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction("index", "Posts", new { id = user.Id, name = user.Name });
-            //+RedirectToAction("index", "Friendships", new { id = coment.Id });
+            // Перенаправлення на Posts з даними користувача
+            return RedirectToAction("Index", "Posts", new { id = user.Id, name = user.UserName });
         }
-
-        //public async Task<IActionResult> friendship(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var user = await _context.Users
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    //return View(user);
-        //    return RedirectToAction("index", "Friendships", new { id = user.Id, name = user.Name });
-        //}
-
-
-
 
         // GET: Users/Create
         public IActionResult Create()
@@ -76,9 +70,6 @@ namespace LibraryInfrastructure.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Email,Birthdate,Password")] User user)
         {
-            // Примусово встановлюємо Status
-            user.Status = "user";
-
             if (!ModelState.IsValid)
             {
                 return View(user);
@@ -89,9 +80,8 @@ namespace LibraryInfrastructure.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
@@ -107,19 +97,14 @@ namespace LibraryInfrastructure.Controllers
         }
 
         // POST: Users/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Birthdate,Password")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Email,Birthdate,Password")] User user)
         {
             if (id != user.Id)
             {
                 return NotFound();
             }
-
-            // Примусово залишаємо статус
-            user.Status = "user";
 
             if (!ModelState.IsValid)
             {
@@ -147,7 +132,7 @@ namespace LibraryInfrastructure.Controllers
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
@@ -167,7 +152,7 @@ namespace LibraryInfrastructure.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user != null)
@@ -179,9 +164,9 @@ namespace LibraryInfrastructure.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
         }
     }
-    }
+}

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace LibraryDomain.Model;
 
-namespace LibraryDomain.Model;
-
-public partial class Group : Entity
+public partial class Group
 {
     public int Id { get; set; }
 
@@ -11,7 +8,7 @@ public partial class Group : Entity
 
     public string? Info { get; set; }
 
-    public DateTime CreateAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    public virtual ICollection<Usergroup> Usergroups { get; set; } = new List<Usergroup>();
+    public virtual ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
 }

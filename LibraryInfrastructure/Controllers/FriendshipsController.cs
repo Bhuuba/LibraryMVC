@@ -11,9 +11,9 @@ namespace LibraryInfrastructure.Controllers
 {
     public class FriendshipsController : Controller
     {
-        private readonly DblibraryContext _context;
+        private readonly SocialNetworkContext _context;
 
-        public FriendshipsController(DblibraryContext context)
+        public FriendshipsController(SocialNetworkContext context)
         {
             _context = context;
         }
@@ -64,8 +64,8 @@ namespace LibraryInfrastructure.Controllers
                     friendship.Status = "user";
 
                 // Якщо CreateAt не вказано, ставимо поточну дату
-                if (friendship.CreateAt == default)
-                    friendship.CreateAt = DateTime.Now;
+                if (friendship.CreatedAt == default)
+                    friendship.CreatedAt = DateTime.Now;
 
                 _context.Add(friendship);
                 await _context.SaveChangesAsync();
@@ -104,8 +104,8 @@ namespace LibraryInfrastructure.Controllers
                     if (string.IsNullOrEmpty(friendship.Status))
                         friendship.Status = "user";
 
-                    if (friendship.CreateAt == default)
-                        friendship.CreateAt = DateTime.Now;
+                    if (friendship.CreatedAt == default)
+                        friendship.CreatedAt = DateTime.Now;
 
                     _context.Update(friendship);
                     await _context.SaveChangesAsync();

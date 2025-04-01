@@ -9,9 +9,9 @@ namespace LibraryInfrastructure.Controllers
     {
         private record CountByYearResponseItem(string Year, int Count);
 
-        private readonly DblibraryContext _db;
+        private readonly SocialNetworkContext _db;
 
-        public ChartsController(DblibraryContext db)
+        public ChartsController(SocialNetworkContext db)
         {
             _db = db;
         }
@@ -21,7 +21,7 @@ namespace LibraryInfrastructure.Controllers
         {
             var responseItems = await _db
                 .Posts
-                .GroupBy(post => post.CreateAt.Year)  // Залежить від вашого поля
+                .GroupBy(post => post.CreatedAt.Year)  // Залежить від вашого поля
                 .Select(g => new CountByYearResponseItem(
                     g.Key.ToString(),
                     g.Count()
@@ -34,8 +34,8 @@ namespace LibraryInfrastructure.Controllers
         [HttpGet("countCommentsByYear")]
         public async Task<IActionResult> GetCountCommentsByYearAsync(CancellationToken cancellationToken)
         {
-            var result = await _db.Coments
-                .GroupBy(c => c.CreateAt.Year)
+            var result = await _db.Comments
+                .GroupBy(c => c.CreatedAt.Year)
                 .Select(g => new {
                     year = g.Key.ToString(),
                     count = g.Count()

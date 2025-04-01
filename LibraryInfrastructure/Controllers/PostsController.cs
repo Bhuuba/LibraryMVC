@@ -11,9 +11,9 @@ namespace LibraryInfrastructure.Controllers
 {
     public class PostsController : Controller
     {
-        private readonly DblibraryContext _context;
+        private readonly SocialNetworkContext _context;
 
-        public PostsController(DblibraryContext context)
+        public PostsController(SocialNetworkContext context)
         {
             _context = context;
         }
@@ -59,9 +59,9 @@ namespace LibraryInfrastructure.Controllers
             if (ModelState.IsValid)
             {
                 // Якщо CreateAt не вказано, встановлюємо поточну дату/час
-                if (post.CreateAt == default)
+                if (post.CreatedAt == default)
                 {
-                    post.CreateAt = DateTime.Now;
+                    post.CreatedAt = DateTime.Now;
                 }
 
                 _context.Add(post);
@@ -99,9 +99,9 @@ namespace LibraryInfrastructure.Controllers
                 try
                 {
                     // Якщо CreateAt не задано – теж ставимо поточну дату (за потреби)
-                    if (post.CreateAt == default)
+                    if (post.CreatedAt == default)
                     {
-                        post.CreateAt = DateTime.Now;
+                        post.CreatedAt = DateTime.Now;
                     }
 
                     _context.Update(post);

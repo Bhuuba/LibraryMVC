@@ -1,4 +1,4 @@
-﻿@model LibraryDomain.Model.Coment
+﻿@model LibraryDomain.Model.Comment
 
 @{
     ViewData["Title"] = "Деталі коментаря";
@@ -57,7 +57,7 @@
         <span class="details-label">Текст:</span> @Model.Text
     </div>
     <div class="details-row">
-        <span class="details-label">Дата створення:</span> @Model.CreateAt
+        <span class="details-label">Дата створення:</span> @Model.CreatedAt
     </div>
     <div class="details-row">
         <span class="details-label">Пост:</span> @Model.Post?.Text

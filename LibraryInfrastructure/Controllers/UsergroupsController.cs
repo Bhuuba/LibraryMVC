@@ -11,9 +11,9 @@ namespace LibraryInfrastructure.Controllers
 {
     public class UsergroupsController : Controller
     {
-        private readonly DblibraryContext _context;
+        private readonly SocialNetworkContext _context;
 
-        public UsergroupsController(DblibraryContext context)
+        public UsergroupsController(SocialNetworkContext context)
         {
             _context = context;
         }
@@ -21,7 +21,7 @@ namespace LibraryInfrastructure.Controllers
         // GET: Usergroups
         public async Task<IActionResult> Index()
         {
-            var dblibraryContext = _context.Usergroups
+            var dblibraryContext = _context.UserGroups
                 .Include(u => u.Group)
                 .Include(u => u.User);
             return View(await dblibraryContext.ToListAsync());
@@ -35,7 +35,7 @@ namespace LibraryInfrastructure.Controllers
                 return NotFound();
             }
 
-            var usergroup = await _context.Usergroups
+            var usergroup = await _context.UserGroups
                 .Include(u => u.Group)
                 .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -58,7 +58,7 @@ namespace LibraryInfrastructure.Controllers
         // POST: Usergroups/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,GroupId")] Usergroup usergroup)
+        public async Task<IActionResult> Create([Bind("Id,UserId,GroupId")] UserGroup usergroup)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace LibraryInfrastructure.Controllers
                 return NotFound();
             }
 
-            var usergroup = await _context.Usergroups.FindAsync(id);
+            var usergroup = await _context.UserGroups.FindAsync(id);
             if (usergroup == null)
             {
                 return NotFound();
@@ -92,7 +92,7 @@ namespace LibraryInfrastructure.Controllers
         // POST: Usergroups/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,GroupId")] Usergroup usergroup)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,GroupId")] UserGroup usergroup)
         {
             if (id != usergroup.Id)
             {
@@ -132,7 +132,7 @@ namespace LibraryInfrastructure.Controllers
                 return NotFound();
             }
 
-            var usergroup = await _context.Usergroups
+            var usergroup = await _context.UserGroups
                 .Include(u => u.Group)
                 .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -149,10 +149,10 @@ namespace LibraryInfrastructure.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usergroup = await _context.Usergroups.FindAsync(id);
+            var usergroup = await _context.UserGroups.FindAsync(id);
             if (usergroup != null)
             {
-                _context.Usergroups.Remove(usergroup);
+                _context.UserGroups.Remove(usergroup);
             }
 
             await _context.SaveChangesAsync();
@@ -164,7 +164,7 @@ namespace LibraryInfrastructure.Controllers
         public IActionResult Group()
         {
             // Якщо хочете відобразити список usergroup, розкоментуйте:
-            var allUserGroups = _context.Usergroups
+            var allUserGroups = _context.UserGroups
                 .Include(u => u.Group)
                 .Include(u => u.User)
                 .ToList();
@@ -176,7 +176,7 @@ namespace LibraryInfrastructure.Controllers
 
         private bool UsergroupExists(int id)
         {
-            return _context.Usergroups.Any(e => e.Id == id);
+            return _context.UserGroups.Any(e => e.Id == id);
         }
     }
 }

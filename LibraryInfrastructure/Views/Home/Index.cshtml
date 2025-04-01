@@ -1,12 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<LibraryDomain.Model.Post>
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <style>
-        h1{
-            color:aqua;
-        }
-    </style>
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            @foreach (var post in Model)
+            {
+                <div class="card my-3 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <div class="d-flex align-items-center">
+                            <img src="~/images/default-avatar.png" alt="avatar" class="rounded-circle" style="width:40px; height:40px; object-fit:cover; margin-right:10px;">
+                            <div>
+                                <strong>@post.User.UserName</strong>
+                                <br />
+                                <small class="text-muted">@post.CreatedAt.ToString("g")</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>@post.Text</p>
+                    </div>
+                    @if (post.Comments != null && post.Comments.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var comment in post.Comments.OrderBy(c => c.CreatedAt))
+                            {
+                                <li class="list-group-item">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <img src="~/images/default-avatar.png" alt="avatar" class="rounded-circle" style="width:30px; height:30px; object-fit:cover; margin-right:8px;">
+                                        <strong>@comment.User.UserName</strong>
+                                        <small class="text-muted ms-auto">@comment.CreatedAt.ToString("g")</small>
+                                    </div>
+                                    <p class="mb-0">@comment.Text</p>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+<style>
+    body {
+        background-color: #f0f2f5;
+    }
+
+    .card {
+        border: none;
+        border-radius: 8px;
+    }
+
+    .card-header {
+        border-bottom: 1px solid #e9ecef;
+    }
+</style>

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace LibraryDomain.Model;
 
-namespace LibraryDomain.Model;
-
-public partial class Usergroup : Entity
+public partial class UserGroup
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; }
+    public required string UserId { get; set; }
 
     public int GroupId { get; set; }
 

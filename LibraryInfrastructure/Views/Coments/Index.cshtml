@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LibraryDomain.Model.Coment>
+﻿@model IEnumerable<LibraryDomain.Model.Comment>
 
 @{
     ViewData["Title"] = "Коментарі";
@@ -144,7 +144,7 @@
                     </div>
                     <div class="comment-content">
                         <div class="comment-author">@item.User?.Email</div>
-                        <div class="comment-date">@item.CreateAt.ToString("dd.MM.yyyy HH:mm")</div>
+                        <div class="comment-date">@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</div>
                         <div class="comment-text">@item.Text</div>
                         <div class="comment-actions">
                             <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a>
